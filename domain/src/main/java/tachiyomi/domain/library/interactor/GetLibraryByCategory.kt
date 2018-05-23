@@ -14,7 +14,7 @@ class GetLibraryByCategory @Inject constructor(
 
   fun interact(): Flowable<List<LibraryCategory>> {
     return Flowable.combineLatest(
-      categoryRepository.getCategories(),
+      categoryRepository.subscribeCategories(),
       libraryRepository.getLibraryEntries(),
       BiFunction { categories, library ->
         val byCategory = library.groupBy { it.category }

@@ -15,7 +15,6 @@ class CreateCategoryWithName @Inject constructor(
       return Completable.error(EmptyCategoryName())
     }
     return categoryRepository.getCategories()
-      .take(1)
       .flatMapCompletable { categories ->
         if (categories.none { name.equals(it.name, ignoreCase = true) }) {
           val nextOrder = categories.maxBy { it.order }?.order?.plus(1) ?: 0

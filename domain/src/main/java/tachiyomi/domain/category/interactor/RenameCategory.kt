@@ -16,7 +16,6 @@ class RenameCategory @Inject constructor(
       return Completable.error(EmptyCategoryName())
     }
     return categoryRepository.getCategories()
-      .take(1)
       .flatMapCompletable { categories ->
         if (categories.none { newName.equals(it.name, ignoreCase = true) }) {
           categoryRepository.renameCategory(categoryId, newName)

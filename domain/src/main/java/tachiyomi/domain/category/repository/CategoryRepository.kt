@@ -2,11 +2,14 @@ package tachiyomi.domain.category.repository
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import tachiyomi.domain.category.Category
 
 interface CategoryRepository {
 
-  fun getCategories(): Flowable<List<Category>>
+  fun getCategories(): Single<List<Category>>
+
+  fun subscribeCategories(): Flowable<List<Category>>
 
   fun getCategoriesForManga(mangaId: Long): Flowable<List<Category>>
 

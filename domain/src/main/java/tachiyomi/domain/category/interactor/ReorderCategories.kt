@@ -16,7 +16,6 @@ class ReorderCategories @Inject constructor(
 
   fun interact(from: Long, to: Long): Completable {
     return categoryRepository.getCategories()
-      .take(1)
       .flatMapCompletable { categories ->
         val fromPosition = categories.indexOfFirst { it.id == from }
         val toPosition = categories.indexOfFirst { it.id == to }

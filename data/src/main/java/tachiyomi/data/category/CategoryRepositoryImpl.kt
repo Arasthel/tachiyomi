@@ -6,6 +6,7 @@ import com.pushtorefresh.storio3.sqlite.queries.RawQuery
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import tachiyomi.data.category.model.MangaCategory
 import tachiyomi.data.category.resolver.RenameCategoryPutResolver
 import tachiyomi.data.category.resolver.ReorderCategoriesPutResolver
@@ -22,7 +23,18 @@ internal class CategoryRepositoryImpl @Inject constructor(
   private val storio: StorIOSQLite
 ) : CategoryRepository {
 
-  override fun getCategories(): Flowable<List<Category>> {
+  override fun getCategories(): Single<List<Category>> {
+    return storio.get()
+      .listOfObjects(Category::class.java)
+      .withQuery(Query.builder()
+        .table(CategoryTable.TABLE)
+        .orderBy(CategoryTable.COL_ORDER)
+        .build())
+      .prepare()
+      .asRxSingle()
+  }
+
+  override fun subscribeCategories(): Flowable<List<Category>> {
     return storio.get()
       .listOfObjects(Category::class.java)
       .withQuery(Query.builder()
